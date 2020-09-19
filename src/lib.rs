@@ -3,19 +3,32 @@
 //! See the [`LinearMap`](struct.LinearMap.html) type for details.
 
 #![deny(missing_docs)]
+#![cfg_attr(not(std), no_std)]
+
+#[cfg(not(std))]
+extern crate alloc;
 
 // Optional Serde support
 #[cfg(feature = "serde_impl")]
 pub mod serde;
 pub mod set;
 
-use std::borrow::Borrow;
-use std::fmt::{self, Debug};
-use std::iter;
-use std::mem;
-use std::ops;
-use std::slice;
-use std::vec;
+#[cfg(std)]
+use std::{
+    borrow::Borrow,
+    fmt::{self, Debug},
+    iter, mem, ops, slice, vec,
+};
+
+#[cfg(not(std))]
+use core::{
+    borrow::Borrow,
+    fmt::{self, Debug},
+    iter, mem, ops, slice,
+};
+
+#[cfg(not(std))]
+use alloc::{vec, vec::Vec};
 
 use self::Entry::{Occupied, Vacant};
 
